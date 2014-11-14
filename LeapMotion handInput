@@ -32,6 +32,11 @@ class LeapListener extends Listener{
 			System.out.println(handType + ", Hand ID: " + hand.id()
 								+ ", Palm Position: " + hand.palmPosition());
 		}
+		
+		for (Finger finger : frame.fingers()){
+			System.out.println("Finger Type: " +finger.type() +
+								", Finger ID: " + finger.id());
+		}
 	}
 }
 
