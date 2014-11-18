@@ -1,8 +1,10 @@
 import java.io.IOException;
-
 import com.leapmotion.leap.*;
-import com.leapmotion.leap.Gesture.State;
 
+/**
+* Creates a listener for the leap motion sensors and the actions
+* that should be done at that time
+*/
 class LeapListener extends Listener{
 	public void onInit(Controller controller){
 		System.out.println("Initialized");
@@ -10,10 +12,6 @@ class LeapListener extends Listener{
 	
 	public void onConnect(Controller controller){
 		System.out.println("Connected to Motion Sensor");
-	/*	controller.enableGesture(Gesture.Type.TYPE_SWIPE);
-		controller.enableGesture(Gesture.Type.TYPE_CIRCLE);
-		controller.enableGesture(Gesture.Type.TYPE_SCREEN_TAP);
-		controller.enableGesture(Gesture.Type.TYPE_KEY_TAP);*/
 	}
 	
 	public void onDisconnect(Controller controller){
@@ -24,15 +22,22 @@ class LeapListener extends Listener{
 		System.out.println("Exited");
 	}
 	
+	/**
+	* Creates a frame to collect data from
+	*/
 	public void onFrame(Controller controller){
+		
+		//Creates a hold for each new frame
 		Frame frame = controller.frame();
 
+		//For each hand identified in the frame type out the listed information
 		for (Hand hand : frame.hands()){
 			String handType = hand.isLeft() ? "Left Hand" : "Right Hand";
 			System.out.println(handType + ", Hand ID: " + hand.id()
 								+ ", Palm Position: " + hand.palmPosition());
 		}
 		
+		//For each finger identified on every hand type out the listed information
 		for (Finger finger : frame.fingers()){
 			System.out.println("Finger Type: " +finger.type() +
 								", Finger ID: " + finger.id());
@@ -40,12 +45,16 @@ class LeapListener extends Listener{
 	}
 }
 
+/**
+* This class creates a new leap motion
+*/
 public class LeapController {
 
 	public static void main(String[] args) {
 		LeapListener listener = new LeapListener();
 		Controller controller = new Controller();
 		
+		//Add listener to leap motion
 		controller.addListener(listener);
 		
 		System.out.println("Press enter to Quit");
@@ -55,6 +64,7 @@ public class LeapController {
 			e.printStackTrace();
 		}
 		
+		//Remove listener
 		controller.removeListener(listener);
 		
 	}
